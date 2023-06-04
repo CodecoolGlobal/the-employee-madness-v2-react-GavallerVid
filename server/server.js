@@ -18,6 +18,14 @@ app.get("/api/employees/", async (req, res) => {
   return res.json(employees);
 });
 
+app.get('/api/employees/:search', async(req, res) => {
+  const employees = await EmployeeModel.find(
+    { $or: [{name: {$regex: req.params.search}}, {level: {$regex: req.params.search}}, {position: {$regex: req.params.search}}] })
+  console.log(req.params.search)
+  console.log(employees)
+  return res.json(employees)
+})
+
 app.get("/api/employees/:id", async (req, res) => {
   const employee = await EmployeeModel.findById(req.params.id);
   return res.json(employee);
