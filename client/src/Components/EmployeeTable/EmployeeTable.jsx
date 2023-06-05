@@ -1,8 +1,14 @@
 import { Link } from "react-router-dom";
 import "./EmployeeTable.css";
 
-const EmployeeTable = ({ employees, onDelete, onSort, onSortLevel, onPosSort }) => (
+const EmployeeTable = ({ employees, onDelete, onSort, onSortLevel, onPosSort, onLastNameSort, onSortMiddleName }) => (
   <div className="EmployeeTable">
+    <button type="button" onClick={() => {
+      onSortMiddleName()
+    }}>Middle Name First</button>
+    <button type="button" onClick={() => {
+      onLastNameSort()
+    }}>Sort By Last Name</button>
     <table>
       <thead>
         <tr>
@@ -24,6 +30,7 @@ const EmployeeTable = ({ employees, onDelete, onSort, onSortLevel, onPosSort }) 
             <td>{employee.name}</td>
             <td>{employee.level}</td>
             <td>{employee.position}</td>
+            <td>Here come the eqs</td>
             <td>
               <Link to={`/update/${employee._id}`}>
                 <button type="button">Update</button>

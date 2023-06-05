@@ -18,6 +18,8 @@ const EmployeeList = () => {
   const [sorted, setSorted] = useState(false);
   const [sortedLevel, setSortedLevel] = useState(false);
   const [sortedPos, setSortedPos] = useState(false);
+  const [sortedByLast, setsortedByLast] = useState(false);
+  const [sortedByMiddle, setsortedByMiddle] = useState(false)
 
   const handleDelete = (id) => {
     deleteEmployee(id);
@@ -57,6 +59,56 @@ const EmployeeList = () => {
     setEmployees(descPosEmps)
   };
 
+  const sortLastAsc = () => {
+    const ascLastNamesEmps = [...employees].sort((a,b) => {
+      const lastNameA = a.name.split(' ').slice(-1)[0];
+      const lastNameB = b.name.split(' ').slice(-1)[0];
+
+      return lastNameA.localeCompare(lastNameB);
+    })
+    setEmployees(ascLastNamesEmps)
+  };
+
+  const sortLastDec = () => {
+    const descLastNamesEmps = [...employees].sort((a,b) => {
+      const lastNameA = a.name.split(' ').slice(-1)[0];
+      const lastNameB = b.name.split(' ').slice(-1)[0];
+
+      return lastNameB.localeCompare(lastNameA);
+    })
+    setEmployees(descLastNamesEmps)
+  }
+
+  const sortMiddleAsc = () => {
+    const ascMiddleNamesEmps = [...employees].sort((a,b) => {
+      const middleNameA = getMiddleName(a.name)
+      const middleNameB = getMiddleName(b.name)
+
+      return middleNameA.localeCompare(middleNameB);
+    })
+    setEmployees(ascMiddleNamesEmps)
+  };
+
+  const sortMiddleDec = () => {
+    const descMiddleNamesEmps = [...employees].sort((a,b) => {
+      const middleNameA = getMiddleName(a.name)
+      const middleNameB = getMiddleName(b.name)
+
+      return middleNameB.localeCompare(middleNameA);
+    })
+    setEmployees(descMiddleNamesEmps)
+  }
+
+  const sortMiddleName = () => {
+    if (sortedByMiddle) {
+      setsortedByMiddle(false)
+      sortMiddleAsc()
+    } else {
+      setsortedByMiddle(true)
+      sortMiddleDec()
+    }
+  }
+
   const sortPosition = () => {
     if (sortedPos) {
       setSortedPos(false)
@@ -87,6 +139,26 @@ const EmployeeList = () => {
     }
   }
 
+  const sortByLastN = () => {
+    if(sortedByLast) {
+      setsortedByLast(false)
+      sortLastAsc()
+    } else {
+      setsortedByLast(true)
+      sortLastDec()
+    }
+  }
+
+  const getMiddleName = (name) => {
+    const nameParts = name.split(' ');
+
+    if(nameParts.length > 2) {
+      return nameParts[1]
+    }
+
+    return '';
+  }
+
   useEffect(() => {
     fetchEmployees()
       .then((employees) => {
@@ -100,7 +172,7 @@ const EmployeeList = () => {
   }
 
   return <EmployeeTable employees={employees} onDelete={handleDelete} onSort={sortFirstName} onSortLevel={sortLevel}
-  onPosSort={sortPosition}/>;
+  onPosSort={sortPosition} onLastNameSort={sortByLastN} onSortMiddleName={sortMiddleName}/>;
 };
 
 export default EmployeeList;
