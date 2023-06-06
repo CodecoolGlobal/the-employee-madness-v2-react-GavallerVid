@@ -4,6 +4,10 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
   const [name, setName] = useState(employee?.name ?? "");
   const [level, setLevel] = useState(employee?.level ?? "");
   const [position, setPosition] = useState(employee?.position ?? "");
+  const [equipmentName, setEquipmentName] = useState("");
+  const [equipmentType, setEquipmentType] = useState("");
+  const [equipmentAmount, setEquipmentAmount] = useState("");
+  const equipment = {name: equipmentName, type: equipmentType, amount: equipmentAmount}
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -14,6 +18,7 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
         name,
         level,
         position,
+        equipment
       });
     }
 
@@ -21,6 +26,7 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
       name,
       level,
       position,
+      equipment
     });
   };
 
@@ -51,6 +57,36 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
         <input
           value={position}
           onChange={(e) => setPosition(e.target.value)}
+          name="position"
+          id="position"
+        />
+      </div>
+
+      <div className="control">
+        <label htmlFor="position">Equipment Name:</label>
+        <input
+          value={equipmentName}
+          onChange={(e) => setEquipmentName(e.target.value)}
+          name="position"
+          id="position"
+        />
+      </div>
+
+      <div className="control">
+        <label htmlFor="position">Equipment Type:</label>
+        <input
+          value={equipmentType}
+          onChange={(e) => setEquipmentType(e.target.value)}
+          name="position"
+          id="position"
+        />
+      </div>
+
+      <div className="control">
+        <label htmlFor="position">Equipment amount:</label>
+        <input
+          value={equipmentAmount}
+          onChange={(e) => setEquipmentAmount(e.target.value)}
           name="position"
           id="position"
         />
