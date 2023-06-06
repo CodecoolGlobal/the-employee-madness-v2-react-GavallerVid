@@ -1,6 +1,7 @@
 import { useState } from "react";
 import EmployeeTable from "../Components/EmployeeTable";
 import "../Components/EmployeeTable/EmployeeTable.css";
+import EmployeeList from "./EmployeeList";
 
 const SearchField = () => {
 
@@ -32,7 +33,7 @@ const SearchField = () => {
                     </div>
                 </form>
             </div>
-            {searchedEmps && <EmployeeTable employees={searchedEmps}/>}
+            {searchedEmps && <EmployeeList searchedEmps={searchedEmps}/>}
         </div>)
 }
 

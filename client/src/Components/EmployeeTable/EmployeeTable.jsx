@@ -32,6 +32,8 @@ const EmployeeTable = ({ employees, onDelete, onSort, onSortLevel, onPosSort, on
             <td>{employee.position}</td>
             <td>Here come the eqs</td>
             <td>
+              {employee.equipment? <button type="button">Edit Equipment</button>
+              : <button type="button">Add Equipment</button>} 
               <Link to={`/update/${employee._id}`}>
                 <button type="button">Update</button>
               </Link>

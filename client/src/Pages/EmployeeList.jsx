@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Loading from "../Components/Loading";
 import EmployeeTable from "../Components/EmployeeTable";
+import SearchField from "./SearchField";
 
 const fetchEmployees = () => {
   return fetch("/api/employees").then((res) => res.json());
@@ -12,7 +13,7 @@ const deleteEmployee = (id) => {
   );
 };
 
-const EmployeeList = () => {
+const EmployeeList = ({searchedEmps}) => {
   const [loading, setLoading] = useState(true);
   const [employees, setEmployees] = useState(null);
   const [sorted, setSorted] = useState(false);
@@ -20,6 +21,10 @@ const EmployeeList = () => {
   const [sortedPos, setSortedPos] = useState(false);
   const [sortedByLast, setsortedByLast] = useState(false);
   const [sortedByMiddle, setsortedByMiddle] = useState(false)
+
+/*   if (searchedEmps) {
+    setEmployees(searchedEmps)
+  } */
 
   const handleDelete = (id) => {
     deleteEmployee(id);
@@ -171,8 +176,12 @@ const EmployeeList = () => {
     return <Loading />;
   }
 
-  return <EmployeeTable employees={employees} onDelete={handleDelete} onSort={sortFirstName} onSortLevel={sortLevel}
-  onPosSort={sortPosition} onLastNameSort={sortByLastN} onSortMiddleName={sortMiddleName}/>;
+  return (<>
+  {searchedEmps ? <EmployeeTable employees={searchedEmps} onDelete={handleDelete} onSort={sortFirstName} onSortLevel={sortLevel}
+  onPosSort={sortPosition} onLastNameSort={sortByLastN} onSortMiddleName={sortMiddleName}/> 
+  : <EmployeeTable employees={employees} onDelete={handleDelete} onSort={sortFirstName} onSortLevel={sortLevel}
+  onPosSort={sortPosition} onLastNameSort={sortByLastN} onSortMiddleName={sortMiddleName}/>}
+  </>)
 };
 
 export default EmployeeList;
