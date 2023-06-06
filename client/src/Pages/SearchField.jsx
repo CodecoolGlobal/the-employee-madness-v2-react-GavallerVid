@@ -3,19 +3,10 @@ import EmployeeTable from "../Components/EmployeeTable";
 import "../Components/EmployeeTable/EmployeeTable.css";
 import EmployeeList from "./EmployeeList";
 
-const SearchField = () => {
 
-    const [searchedEmps, setSearchedEmps] = useState(null)
-    const [searchParam, setSearchParam] = useState("")
+const SearchField = ({fetchSearchedEmployee}) => {
 
-    const fetchSearchedEmployee = () => {
-
-        const caseFormattedParam = searchParam.charAt(0).toUpperCase() + searchParam.slice(1).toLowerCase();
-
-            return fetch(`/api/employees/${caseFormattedParam}`).then((res) => res.json()).then((employees) => {
-                setSearchedEmps(employees)
-            })
-    }
+const [searchParam, setSearchParam] = useState("")
 
     return (
         <div id="formContainer">
@@ -29,11 +20,12 @@ const SearchField = () => {
                             name="search"
                             id="search"
                             />
-                        <button type="button" onClick={fetchSearchedEmployee}>Search</button>
+                        <button type="button" onClick={() => {
+                            fetchSearchedEmployee(searchParam)}
+                            }>Search</button>
                     </div>
                 </form>
             </div>
-            {searchedEmps && <EmployeeList searchedEmps={searchedEmps}/>}
         </div>)
 }
 

@@ -7,13 +7,14 @@ const fetchEmployees = () => {
   return fetch("/api/employees").then((res) => res.json());
 };
 
+
 const deleteEmployee = (id) => {
   return fetch(`/api/employees/${id}`, { method: "DELETE" }).then((res) =>
-    res.json()
+  res.json()
   );
 };
 
-const EmployeeList = ({searchedEmps}) => {
+const EmployeeList = () => {
   const [loading, setLoading] = useState(true);
   const [employees, setEmployees] = useState(null);
   const [sorted, setSorted] = useState(false);
@@ -21,10 +22,14 @@ const EmployeeList = ({searchedEmps}) => {
   const [sortedPos, setSortedPos] = useState(false);
   const [sortedByLast, setsortedByLast] = useState(false);
   const [sortedByMiddle, setsortedByMiddle] = useState(false)
-
-/*   if (searchedEmps) {
-    setEmployees(searchedEmps)
-  } */
+  const [searchClicked, setSearchClicked] = useState(false);
+  
+  const fetchEmployeesOnCancel = () => {
+    return fetch("/api/employees").then((res) => res.json()).then((employees) => {
+      setLoading(false);
+      setEmployees(employees);
+    })
+  };
 
   const handleDelete = (id) => {
     deleteEmployee(id);
@@ -164,6 +169,15 @@ const EmployeeList = ({searchedEmps}) => {
     return '';
   }
 
+  const fetchSearchedEmployee = (searchParam) => {
+
+    const caseFormattedParam = searchParam.charAt(0).toUpperCase() + searchParam.slice(1).toLowerCase();
+
+        return fetch(`/api/employees/${caseFormattedParam}`).then((res) => res.json()).then((employees) => {
+            setEmployees(employees)
+        })
+  }
+
   useEffect(() => {
     fetchEmployees()
       .then((employees) => {
@@ -177,10 +191,9 @@ const EmployeeList = ({searchedEmps}) => {
   }
 
   return (<>
-  {searchedEmps ? <EmployeeTable employees={searchedEmps} onDelete={handleDelete} onSort={sortFirstName} onSortLevel={sortLevel}
-  onPosSort={sortPosition} onLastNameSort={sortByLastN} onSortMiddleName={sortMiddleName}/> 
-  : <EmployeeTable employees={employees} onDelete={handleDelete} onSort={sortFirstName} onSortLevel={sortLevel}
-  onPosSort={sortPosition} onLastNameSort={sortByLastN} onSortMiddleName={sortMiddleName}/>}
+  {searchClicked && <SearchField fetchSearchedEmployee={fetchSearchedEmployee}/>}
+  <EmployeeTable fetchEmployeesOnCancel={fetchEmployeesOnCancel} employees={employees} onDelete={handleDelete} onSort={sortFirstName} onSortLevel={sortLevel}
+  onPosSort={sortPosition} onLastNameSort={sortByLastN} onSortMiddleName={sortMiddleName} setSearchClicked={setSearchClicked}/>
   </>)
 };
 

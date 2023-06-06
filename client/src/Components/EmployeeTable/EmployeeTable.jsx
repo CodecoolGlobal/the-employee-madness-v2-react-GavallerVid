@@ -1,7 +1,13 @@
 import { Link } from "react-router-dom";
 import "./EmployeeTable.css";
+import { useState } from "react";
 
-const EmployeeTable = ({ employees, onDelete, onSort, onSortLevel, onPosSort, onLastNameSort, onSortMiddleName }) => (
+const EmployeeTable = ({ employees, onDelete, onSort, onSortLevel, onPosSort, onLastNameSort, onSortMiddleName, setSearchClicked, fetchEmployeesOnCancel }) => {
+
+  const [showButton, setShowButton] = useState(true)
+  const [showCancel, setShowCancel] = useState(false)
+
+  return (
   <div className="EmployeeTable">
     <button type="button" onClick={() => {
       onSortMiddleName()
@@ -9,6 +15,17 @@ const EmployeeTable = ({ employees, onDelete, onSort, onSortLevel, onPosSort, on
     <button type="button" onClick={() => {
       onLastNameSort()
     }}>Sort By Last Name</button>
+    {showButton && <button type="button" id="mainSearchBut" onClick={() => {
+      setSearchClicked(true)
+      setShowButton(false)
+      setShowCancel(true)
+    }}>Search</button>}
+    {showCancel && <button onClick={() => {
+      fetchEmployeesOnCancel()
+      setSearchClicked(false)
+      setShowCancel(false)
+      setShowButton(true)
+    }}>Cancel</button>}
     <table>
       <thead>
         <tr>
@@ -45,7 +62,7 @@ const EmployeeTable = ({ employees, onDelete, onSort, onSortLevel, onPosSort, on
         ))}
       </tbody>
     </table>
-  </div>
-);
+  </div>)
+};
 
 export default EmployeeTable;
