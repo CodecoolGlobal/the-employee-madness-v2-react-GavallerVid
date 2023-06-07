@@ -24,3 +24,13 @@ Content-Type:  application/json
 ###
 
 GET http://localhost:8080/api/employees/Antagonist
+
+###
+POST http://localhost:8080/api/equipments
+Content-Type: application/json
+
+{
+  "name": "Chauchat",
+  "type": "LMG",
+  "amount": 10
+}

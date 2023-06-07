@@ -2,14 +2,27 @@ import { useState } from "react";
 
 const EquipmentForm = ({onSave, disabled, onCancel, equipment}) => {
 
-    const [equipmentName, setEquipmentName] = useState("");
-    const [equipmentType, setEquipmentType] = useState("");
-    const [equipmentAmount, setEquipmentAmount] = useState("");
+    const [name, setName] = useState("");
+    const [type, setType] = useState("");
+    const [amount, setAmount] = useState("");
 
     const onSubmit = (e) => {
         e.preventDefault();
 
-        return onSave()
+        if (equipment) {
+          return onSave({
+            ...equipment,
+            name,
+            type,
+            amount,
+          });
+        }
+
+        return onSave({
+          name,
+          type,
+          amount
+        })
     }
 
     return (<>
@@ -17,8 +30,8 @@ const EquipmentForm = ({onSave, disabled, onCancel, equipment}) => {
         <div className="control">
         <label htmlFor="position">Equipment Name:</label>
         <input
-          value={equipmentName}
-          onChange={(e) => setEquipmentName(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           name="position"
           id="position"
         />
@@ -27,8 +40,8 @@ const EquipmentForm = ({onSave, disabled, onCancel, equipment}) => {
       <div className="control">
         <label htmlFor="position">Equipment Type:</label>
         <input
-          value={equipmentType}
-          onChange={(e) => setEquipmentType(e.target.value)}
+          value={type}
+          onChange={(e) => setType(e.target.value)}
           name="position"
           id="position"
         />
@@ -37,8 +50,8 @@ const EquipmentForm = ({onSave, disabled, onCancel, equipment}) => {
       <div className="control">
         <label htmlFor="position">Equipment amount:</label>
         <input
-          value={equipmentAmount}
-          onChange={(e) => setEquipmentAmount(e.target.value)}
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
           name="position"
           id="position"
         />

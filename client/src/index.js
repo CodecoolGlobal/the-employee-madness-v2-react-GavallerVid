@@ -15,6 +15,7 @@ import TableTest from "./Pages/TableTest";
 import FormTest from "./Pages/FormTest";
 import EquiptmentEditor from "./Pages/EquipmentEditor";
 import EquipmentList from "./Pages/EquipmentList";
+import EquipmentCreator from "./Pages/EquipmentCreator";
 
 const router = createBrowserRouter([
   {
@@ -52,7 +53,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/equipment",
-        element: <EmployeeCreator />
+        element: <EquipmentCreator />
       },
       {
         path: "/allequipments",
