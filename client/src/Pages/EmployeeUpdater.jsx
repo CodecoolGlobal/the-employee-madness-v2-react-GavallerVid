@@ -15,7 +15,7 @@ const updateEmployee = (employee) => {
 };
 
 const fetchEmployee = (id) => {
-  return fetch(`/api/employees/${id}`).then((res) => res.json());
+  return fetch(`/api/get/employees/${id}`).then((res) => res.json());
 };
 
 const EmployeeUpdater = () => {

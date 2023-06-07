@@ -17,13 +17,11 @@ const deleteEmployee = (id) => {
 const EmployeeList = () => {
   const [loading, setLoading] = useState(true);
   const [employees, setEmployees] = useState(null);
-  const [sorted, setSorted] = useState(false);
-  const [sortedLevel, setSortedLevel] = useState(false);
-  const [sortedPos, setSortedPos] = useState(false);
+  const [sorted, setSorted] = useState('ascending');
   const [sortedByLast, setsortedByLast] = useState(false);
   const [sortedByMiddle, setsortedByMiddle] = useState(false)
   const [searchClicked, setSearchClicked] = useState(false);
-  
+    
   const fetchEmployeesOnCancel = () => {
     return fetch("/api/employees").then((res) => res.json()).then((employees) => {
       setLoading(false);
@@ -39,35 +37,21 @@ const EmployeeList = () => {
     });
   };
 
-  const sortFirstNameAscOrd = () => {
-    const ascFNameEmps = [...employees].sort((a,b) => a.name > b.name ? 1 : -1)
-    setEmployees(ascFNameEmps)
-  };
+  const handleSort = (key) => {
+    const actualDirection = sorted === 'ascending' ? 'descending' : 'ascending'
+    const newEmployees = sort(employees, key, actualDirection);
+    setSorted(actualDirection);
+    setEmployees(newEmployees);
+  }
 
-  const sortFirstNameDescOrd = () => {
-    const descFNameEmps = [...employees].sort((a,b) => b.name < a.name ? -1 : 1 )
-    setEmployees(descFNameEmps)
-  };
-
-  const sortLevelAsc = () => {
-    const ascLevelEmps = [...employees].sort((a,b) => a.level > b.level ? 1 : -1)
-    setEmployees(ascLevelEmps)
-  };
-
-  const sortLevelDesc = () => {
-    const descLevelEmps = [...employees].sort((a,b) => b.level < a.level ? -1 : 1)
-    setEmployees(descLevelEmps)
-  };
-
-  const sortPosAsc = () => {
-    const ascPosEmps = [...employees].sort((a,b) => a.position > b.position ? 1 : -1)
-    setEmployees(ascPosEmps)
-  };
-
-  const sortPosDesc = () => {
-    const descPosEmps = [...employees].sort((a,b) => b.position < a.position ? -1 : 1)
-    setEmployees(descPosEmps)
-  };
+  const sort = (list, key, direction) => {
+    const ascendingEmps = [...list].sort((a,b) => {
+      return direction === 'ascending' 
+        ? (a[key] > b[key] ? 1 : -1)
+        : (b[key] < a[key] ? -1 : 1)
+    })
+    return ascendingEmps
+  }
 
   const sortLastAsc = () => {
     const ascLastNamesEmps = [...employees].sort((a,b) => {
@@ -119,36 +103,6 @@ const EmployeeList = () => {
     }
   }
 
-  const sortPosition = () => {
-    if (sortedPos) {
-      setSortedPos(false)
-      sortPosAsc()
-    } else {
-      setSortedPos(true)
-      sortPosDesc()
-    }
-  };
-
-  const sortLevel = () => {
-    if (sortedLevel) {
-      setSortedLevel(false)
-      sortLevelAsc()
-    } else {
-      setSortedLevel(true)
-      sortLevelDesc()
-    }
-  };
-
-  const sortFirstName = () => {
-    if (sorted) {
-      setSorted(false)
-      sortFirstNameAscOrd()
-    } else {
-      setSorted(true)
-      sortFirstNameDescOrd()
-    }
-  }
-
   const sortByLastN = () => {
     if(sortedByLast) {
       setsortedByLast(false)
@@ -192,8 +146,15 @@ const EmployeeList = () => {
 
   return (<>
   {searchClicked && <SearchField fetchSearchedEmployee={fetchSearchedEmployee}/>}
-  <EmployeeTable fetchEmployeesOnCancel={fetchEmployeesOnCancel} employees={employees} onDelete={handleDelete} onSort={sortFirstName} onSortLevel={sortLevel}
-  onPosSort={sortPosition} onLastNameSort={sortByLastN} onSortMiddleName={sortMiddleName} setSearchClicked={setSearchClicked}/>
+  <EmployeeTable 
+    fetchEmployeesOnCancel={fetchEmployeesOnCancel}
+    employees={employees} 
+    onDelete={handleDelete} 
+    onSort={handleSort} 
+    onLastNameSort={sortByLastN} 
+    onSortMiddleName={sortMiddleName} 
+    setSearchClicked={setSearchClicked}
+  />
   </>)
 };
 

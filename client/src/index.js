@@ -13,7 +13,8 @@ import SearchField from "./Pages/SearchField";
 import "./index.css";
 import TableTest from "./Pages/TableTest";
 import FormTest from "./Pages/FormTest";
-import EquiptmentCreator from "./Pages/EquipmentCreator";
+import EquiptmentEditor from "./Pages/EquipmentEditor";
+import EquipmentList from "./Pages/EquipmentList";
 
 const router = createBrowserRouter([
   {
@@ -46,8 +47,16 @@ const router = createBrowserRouter([
         element: <SearchField />
       },
       {
+        path: "/equipment/:id",
+        element: <EquiptmentEditor />
+      },
+      {
         path: "/equipment",
-        element: <EquiptmentCreator />
+        element: <EmployeeCreator />
+      },
+      {
+        path: "/allequipments",
+        element: <EquipmentList />
       }
     ],
   },

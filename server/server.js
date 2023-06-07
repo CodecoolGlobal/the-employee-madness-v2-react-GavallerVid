@@ -24,7 +24,8 @@ app.get('/api/employees/:search', async(req, res) => {
   return res.json(employees)
 })
 
-app.get("/api/employees/:id", async (req, res) => {
+app.get("/api/get/employees/:id", async (req, res) => {
+  console.log(':id endpoind called')
   const employee = await EmployeeModel.findById(req.params.id);
   return res.json(employee);
 });
@@ -41,7 +42,6 @@ app.post("/api/employees/", async (req, res, next) => {
 });
 
 app.patch("/api/employees/:id", async (req, res, next) => {
-  console.log(req.body)
   try {
     const employee = await EmployeeModel.findOneAndUpdate(
       { _id: req.params.id },
@@ -69,7 +69,6 @@ const main = async () => {
 
   app.listen(PORT, () => {
     console.log("App is listening on 8080");
-    console.log("Try /api/employees route right now");
   });
 };
 

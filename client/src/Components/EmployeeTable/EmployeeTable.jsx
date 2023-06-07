@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import "./EmployeeTable.css";
 import { useState } from "react";
 
-const EmployeeTable = ({ employees, onDelete, onSort, onSortLevel, onPosSort, onLastNameSort, onSortMiddleName, setSearchClicked, fetchEmployeesOnCancel }) => {
+const EmployeeTable = ({ employees, onDelete, onSort, onLastNameSort, onSortMiddleName, setSearchClicked, fetchEmployeesOnCancel }) => {
 
   const [showButton, setShowButton] = useState(true)
   const [showCancel, setShowCancel] = useState(false)
@@ -30,15 +30,20 @@ const EmployeeTable = ({ employees, onDelete, onSort, onSortLevel, onPosSort, on
       <thead>
         <tr>
           <th id="thButton" onClick={() => {
-            onSort()
-          }}>Name</th>
+            onSort('name')
+          }}>Name
+          </th>
           <th id="thButton" onClick={() => {
-            onSortLevel()
-          }}>Level</th>
+            onSort('level')
+          }}>Level
+          </th>
           <th id="thButton" onClick={() => {
-            onPosSort()
-          }}>Position</th>
-          <th />
+            onSort('position')
+          }}>Position
+          </th>
+          <th >Equipment Name</th>
+          <th >Equipment Type</th>
+          <th >Amount</th>
         </tr>
       </thead>
       <tbody>
@@ -47,7 +52,14 @@ const EmployeeTable = ({ employees, onDelete, onSort, onSortLevel, onPosSort, on
             <td>{employee.name}</td>
             <td>{employee.level}</td>
             <td>{employee.position}</td>
-            <td>Here come the eqs</td>
+            <td>Pistole</td>
+            <td>Handgun</td>
+            <td>1</td>
+            <td>
+              <Link to={`/edit${'equipment._id'}`}>
+                <button type="button">Edit Equipment</button>
+              </Link>
+            </td>
             <td>
               <Link to={`/update/${employee._id}`}>
                 <button type="button">Update</button>
