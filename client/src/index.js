@@ -48,7 +48,7 @@ const router = createBrowserRouter([
         element: <SearchField />
       },
       {
-        path: "/equipment/:id",
+        path: "/edit/:id",
         element: <EquiptmentEditor />
       },
       {

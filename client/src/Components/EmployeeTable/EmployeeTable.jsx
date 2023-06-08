@@ -56,11 +56,6 @@ const EmployeeTable = ({ employees, onDelete, onSort, onLastNameSort, onSortMidd
             <td>Handgun</td>
             <td>1</td>
             <td>
-              <Link to={`/edit${'equipment._id'}`}>
-                <button type="button">Edit Equipment</button>
-              </Link>
-            </td>
-            <td>
               <Link to={`/update/${employee._id}`}>
                 <button type="button">Update</button>
               </Link>

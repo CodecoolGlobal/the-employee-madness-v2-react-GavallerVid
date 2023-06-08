@@ -2,9 +2,9 @@ import { useState } from "react";
 
 const EquipmentForm = ({onSave, disabled, onCancel, equipment}) => {
 
-    const [name, setName] = useState("");
-    const [type, setType] = useState("");
-    const [amount, setAmount] = useState("");
+    const [name, setName] = useState(equipment?.name ?? "");
+    const [type, setType] = useState(equipment?.type ?? "");
+    const [amount, setAmount] = useState(equipment?.amount ?? "");
 
     const onSubmit = (e) => {
         e.preventDefault();

@@ -29,7 +29,7 @@ function EquipmentCreator () {
 
     return (
         <EquipmentForm
-            onCancel={() => {navigate("/")}}
+            onCancel={() => {navigate("/allequipments")}}
             disabled={loading}
             onSave={handleCreateEquipment}
         />

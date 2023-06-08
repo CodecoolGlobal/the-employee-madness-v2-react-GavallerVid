@@ -26,19 +26,51 @@ app.get('/api/employees/:search', async(req, res) => {
 })
 
 app.get("/api/get/employees/:id", async (req, res) => {
-  console.log(':id endpoind called')
   const employee = await EmployeeModel.findById(req.params.id);
   return res.json(employee);
 });
 
+app.get("/api/equipments", async (req, res) => {
+  const equipments = await EquipmentModel.find().sort({ created: "desc"});
+  return res.json(equipments)
+})
+
+app.get("/api/get/equipments/:id", async (req, res) => {
+  const equipment = await EquipmentModel.findById(req.params.id);
+  return res.json(equipment) 
+})
+
 app.post("/api/equipments", async (req, res, next) => {
   const equipment = req.body
-  console.log(equipment)
+
   try {
     const savedEquipment = await EquipmentModel.create(equipment);
     return res.json(savedEquipment)
   } catch (error) {
     return next(error)
+  }
+});
+
+app.patch("/api/equipments/:id", async(req, res, next) => {
+  try {
+    const equipment = await EquipmentModel.findByIdAndUpdate(
+      { _id: req.params.id },
+      { $set: {...req.body } },
+      { new: true}
+    );
+    return res.json(equipment)
+  } catch (error) {
+    return next(error)
+  }
+})
+
+app.delete("/api/equipments/:id", async (req, res, next) => {
+  try {
+    const equipment = await EquipmentModel.findById(req.params.id);
+    const deleted = equipment.delete();
+    return res.json(deleted)
+  } catch (error) {
+    return next(err);
   }
 })
 

@@ -1,9 +1,10 @@
 import EquipmentForm from "../Components/EquipmentForm/EquipmentForm"
-import { useNavigate } from "react-router-dom"
-import { useState, useParams } from "react"
+import { useNavigate, useParams } from "react-router-dom"
+import { useState, useEffect } from "react"
+import Loading from "../Components/Loading";
 
 const updateEquipment = (equipment) => {
-    return fetch(`/api/eqipments/${equipment._id}`, {
+    return fetch(`/api/equipments/${equipment._id}`, {
         method: 'PATCH',
         headers: {
             "Content-Type": "application/json",
@@ -13,24 +14,44 @@ const updateEquipment = (equipment) => {
 }
 
 const fetchEquipment = (id) => {
-    return fetch(`/api/equipments/${id}`).then((res) => res.json())
+    return fetch(`/api/get/equipments/${id}`).then((res) => res.json())
 }
 
 function EquiptmentEditor () {
-
-    const [equipment, setEquipment] = useState(null)
-
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const handleUpdateEquipment = () => {
+    const [equipment, setEquipment] = useState(null)
+    const [updateLoading, setUpdateLoading] = useState(false);
+    const [equipmentLoading, setEquipmentLoading] = useState(true);
 
+    useEffect(() => {
+        setEquipmentLoading(true);
+        fetchEquipment(id)
+            .then((equipment) => {
+                setEquipment(equipment)
+                setEquipmentLoading(false)
+            });
+    }, [id]);
+
+    const handleUpdateEquipment = (equipment) => {
+        setUpdateLoading(true)
+        updateEquipment(equipment)
+            .then(() => {
+                setUpdateLoading(false)
+                navigate("/allequipments")
+            });
+    };
+
+    if (equipmentLoading) {
+        return <Loading />
     }
 
-
-    return <EquipmentForm 
-                onCancel={() => navigate("/")} 
+    return <EquipmentForm
+                onSave={handleUpdateEquipment}
+                onCancel={() => navigate("/allequipments")} 
                 equipment={equipment}
+                disabled={updateLoading}
             />
 }
 
