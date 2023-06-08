@@ -3,7 +3,7 @@ import "./EmployeeTable.css";
 import { useState } from "react";
 import Dialog from "../Dialog";
 
-const EmployeeTable = ({ employees, onDelete, onSort, onLastNameSort, onSortMiddleName, setSearchClicked, fetchEmployeesOnCancel }) => {
+const EmployeeTable = ({ employees,onCheck, onDelete, onSort, onLastNameSort, onSortMiddleName, setSearchClicked, fetchEmployeesOnCancel }) => {
 
   const [showButton, setShowButton] = useState(true)
   const [showCancel, setShowCancel] = useState(false)
@@ -37,6 +37,7 @@ const EmployeeTable = ({ employees, onDelete, onSort, onLastNameSort, onSortMidd
     <table>
       <thead>
         <tr>
+          <th>Attendance</th>
           <th id="thButton" onClick={() => {
             onSort('name')
           }}>Name
@@ -54,6 +55,9 @@ const EmployeeTable = ({ employees, onDelete, onSort, onLastNameSort, onSortMidd
       <tbody>
         {employees.map((employee) => (
           <tr key={employee._id}>
+            <td>
+              <input type="checkbox" onChange={() => onCheck(employee._id)}></input>
+            </td>
             <td>{employee.name}</td>
             <td>{employee.level}</td>
             <td>{employee.position}</td>

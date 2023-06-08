@@ -132,6 +132,10 @@ const EmployeeList = () => {
         })
   }
 
+  const handleCheckedEmployee = (attendanceId) => {
+    console.log('check clicked ' + attendanceId)
+  }
+
   useEffect(() => {
     fetchEmployees()
       .then((employees) => {
@@ -154,6 +158,7 @@ const EmployeeList = () => {
     onLastNameSort={sortByLastN} 
     onSortMiddleName={sortMiddleName} 
     setSearchClicked={setSearchClicked}
+    onCheck={handleCheckedEmployee}
   />
   </>)
 };
