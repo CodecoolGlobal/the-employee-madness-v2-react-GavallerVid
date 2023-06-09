@@ -12,6 +12,7 @@ const EmployeeSchema = new Schema({
   desiredSalary: Number,
   favouriteColor: String,
   startingDate: Date,
+  attendance: String,
   created: {
     type: Date,
     default: Date.now,

@@ -19,13 +19,17 @@ const EmployeeList = () => {
   const [employees, setEmployees] = useState(null);
   const [sorted, setSorted] = useState('ascending');
   const [sortedByLast, setsortedByLast] = useState(false);
-  const [sortedByMiddle, setsortedByMiddle] = useState(false)
+  const [sortedByMiddle, setsortedByMiddle] = useState(false);
   const [searchClicked, setSearchClicked] = useState(false);
+  const [missingShowed, setMissingShowed] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [employeesPerPage, setEmployeesPerPage] = useState(10);
     
   const fetchEmployeesOnCancel = () => {
     return fetch("/api/employees").then((res) => res.json()).then((employees) => {
       setLoading(false);
       setEmployees(employees);
+      setMissingShowed(false)
     })
   };
 
@@ -36,6 +40,12 @@ const EmployeeList = () => {
       return employees.filter((employee) => employee._id !== id);
     });
   };
+
+  const filterEmployeesOnAttendance = () => {
+    setMissingShowed(true)
+    const missingEmployees = employees.filter((employee) => employee.attendance === 'missing')
+    setEmployees(missingEmployees)
+  }
 
   const handleSort = (key) => {
     const actualDirection = sorted === 'ascending' ? 'descending' : 'ascending'
@@ -124,7 +134,6 @@ const EmployeeList = () => {
   }
 
   const fetchSearchedEmployee = (searchParam) => {
-
     const caseFormattedParam = searchParam.charAt(0).toUpperCase() + searchParam.slice(1).toLowerCase();
 
         return fetch(`/api/employees/${caseFormattedParam}`).then((res) => res.json()).then((employees) => {
@@ -132,8 +141,14 @@ const EmployeeList = () => {
         })
   }
 
-  const handleCheckedEmployee = (attendanceId) => {
-    console.log('check clicked ' + attendanceId)
+  const setEmployeeAttendanceOnCheck = (attendanceId, attendanceState) => {
+    return fetch(`/api/employees/${attendanceId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(attendanceState),
+    }).then((res) => res.json())
   }
 
   useEffect(() => {
@@ -152,13 +167,15 @@ const EmployeeList = () => {
   {searchClicked && <SearchField fetchSearchedEmployee={fetchSearchedEmployee}/>}
   <EmployeeTable 
     fetchEmployeesOnCancel={fetchEmployeesOnCancel}
-    employees={employees} 
+    onShowMissing={filterEmployeesOnAttendance}
+    employees={employees}
+    missingShowed={missingShowed}
     onDelete={handleDelete} 
     onSort={handleSort} 
     onLastNameSort={sortByLastN} 
     onSortMiddleName={sortMiddleName} 
     setSearchClicked={setSearchClicked}
-    onCheck={handleCheckedEmployee}
+    onCheck={setEmployeeAttendanceOnCheck}
   />
   </>)
 };

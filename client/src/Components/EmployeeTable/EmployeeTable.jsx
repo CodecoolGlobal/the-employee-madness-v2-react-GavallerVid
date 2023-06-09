@@ -3,7 +3,7 @@ import "./EmployeeTable.css";
 import { useState } from "react";
 import Dialog from "../Dialog";
 
-const EmployeeTable = ({ employees, onCheck, onDelete, onSort, onLastNameSort, onSortMiddleName, setSearchClicked, fetchEmployeesOnCancel }) => {
+const EmployeeTable = ({ employees, onCheck, onDelete, onShowMissing, onSort, onLastNameSort, onSortMiddleName, missingShowed, setSearchClicked, fetchEmployeesOnCancel }) => {
 
   const [showButton, setShowButton] = useState(true)
   const [showCancel, setShowCancel] = useState(false)
@@ -37,6 +37,12 @@ const EmployeeTable = ({ employees, onCheck, onDelete, onSort, onLastNameSort, o
     <button type="button" onClick={() => {
       onLastNameSort()
     }}>Sort By Last Name</button>
+    {missingShowed ? <button onClick={() => {
+      fetchEmployeesOnCancel()
+    }}>Show All</button>
+    : <button onClick={() => {
+      onShowMissing()
+    }}>Show Missing</button>}
     {showButton && <button type="button" id="mainSearchBut" onClick={() => {
       setSearchClicked(true)
       setShowButton(false)
@@ -75,7 +81,22 @@ const EmployeeTable = ({ employees, onCheck, onDelete, onSort, onLastNameSort, o
         {employees.map((employee) => (
           <tr key={employee._id}>
             <td>
-              <input type="checkbox" onChange={() => onCheck(employee._id)}></input>
+              {employee.attendance === 'present' 
+              ? 
+              <><input type="checkbox" id="attendanceInput" checked 
+              onChange={() => {
+                const attendance = {attendance: 'missing'}
+                onCheck(employee._id, attendance)
+                }}></input>
+              <label htmlFor="attendanceInput">{employee.attendance}</label>
+              </>
+              : <><input type="checkbox" id="attendanceInput"  
+              onChange={() => {
+                const attendance = {attendance: 'present'}
+                onCheck(employee._id, attendance)
+                }}></input>
+              <label htmlFor="attendanceInput">{employee.attendance}</label>
+              </>}
             </td>
             <td>{employee.name}</td>
             <td>{employee.level}</td>

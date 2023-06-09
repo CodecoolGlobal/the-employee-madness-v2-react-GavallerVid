@@ -10,6 +10,7 @@ const salaries = require("./salary.json");
 const desiredSalaries = require("./desiredSalary.json");
 const favouriteColors = require("./favouriteColor.json");
 const startingDates = require("./startingDate.json")
+const attendances = require("./attendance.json")
 const EmployeeModel = require("../db/employee.model");
 
 const mongoUrl = process.env.MONGO_URL;
@@ -31,7 +32,8 @@ const populateEmployees = async () => {
     salary: pick(salaries),
     desiredSalary: pick(desiredSalaries),
     favouriteColor: pick(favouriteColors),
-    startingDate: pick(startingDates)
+    startingDate: pick(startingDates),
+    attendance: pick(attendances)
   }));
 
   await EmployeeModel.create(...employees);
