@@ -24,12 +24,12 @@ const EmployeeList = () => {
   const [searchClicked, setSearchClicked] = useState(false);
   const [missingShowed, setMissingShowed] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [employeesPerPage, setEmployeesPerPage] = useState(10);
+  const [employeesPerPage, setEmployeesPerPage] = useState(14);
   const [attendanceChanged, setAttendanceChanged] = useState(1)
 
   const lastEmployeeIndex = currentPage * employeesPerPage;
   const firstEmployeeIndex = lastEmployeeIndex - employeesPerPage
-  //const currentEmployees = employees.slice(firstEmployeeIndex, lastEmployeeIndex)
+  const currentEmployees = employees ? employees.slice(firstEmployeeIndex, lastEmployeeIndex) : null
 
   const fetchEmployeesOnCancel = () => {
     return fetch("/api/employees").then((res) => res.json()).then((employees) => {
@@ -61,12 +61,12 @@ const EmployeeList = () => {
   }
   
   const sort = (list, key, direction) => {
-    const ascendingEmps = [...list].sort((a,b) => {
+    const sortedEmployees = [...list].sort((a,b) => {
       return direction === 'ascending' 
         ? (a[key] > b[key] ? 1 : -1)
         : (b[key] < a[key] ? -1 : 1)
     })
-    return ascendingEmps
+    return sortedEmployees
   }
   
   const sortLastAsc = () => {
@@ -183,7 +183,7 @@ const EmployeeList = () => {
   <EmployeeTable 
     fetchEmployeesOnCancel={fetchEmployeesOnCancel}
     onShowMissing={filterEmployeesOnAttendance}
-    employees={employees}
+    employees={currentEmployees}
     missingShowed={missingShowed}
     onDelete={handleDelete} 
     onSort={handleSort} 
