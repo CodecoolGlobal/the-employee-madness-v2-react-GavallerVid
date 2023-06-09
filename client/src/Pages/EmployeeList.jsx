@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Loading from "../Components/Loading";
 import EmployeeTable from "../Components/EmployeeTable";
 import SearchField from "./SearchField";
+import Pagination from "../Components/Pagination";
 
 const fetchEmployees = () => {
   return fetch("/api/employees").then((res) => res.json());
@@ -190,6 +191,11 @@ const EmployeeList = () => {
     onSortMiddleName={sortMiddleName} 
     setSearchClicked={setSearchClicked}
     onCheck={setEmployeeAttendanceOnCheck}
+    />
+  <Pagination 
+    setCurrentPage={setCurrentPage}
+    employeesPerPage={employeesPerPage}
+    totalEmployees={employees.length}
     />
   </>)
 };
