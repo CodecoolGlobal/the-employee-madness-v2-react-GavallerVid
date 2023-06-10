@@ -9,7 +9,7 @@ function Pagination ({fetchEmployees, possiblePages}) {
 
     return (<div className="pagination" 
         style={{
-            display: "flex-end", 
+            display: "flex", 
             justifyContent: "center",
         }}>
 
