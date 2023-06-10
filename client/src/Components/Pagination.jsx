@@ -7,13 +7,16 @@ function Pagination ({fetchEmployees, possiblePages}) {
         pages.push(i)
     }
 
-    return (<div className="pagination" style={{
-        display: "flex", 
-        justifyContent: "center",
+    return (<div className="pagination" 
+        style={{
+            display: "flex-end", 
+            justifyContent: "center",
         }}>
-        {pages.map((page, index) => {
-            return <button key={index} onClick={() => {fetchEmployees(page)}}>{page}</button>
-        })}
+
+            {pages.map((page, index) => {
+                return <button key={index} onClick={() => {fetchEmployees(page)}}>{page}</button>
+            })}
+
     </div>)
 }
 

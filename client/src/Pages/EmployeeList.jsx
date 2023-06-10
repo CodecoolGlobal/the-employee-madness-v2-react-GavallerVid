@@ -19,29 +19,17 @@ const EmployeeList = () => {
   const [searchClicked, setSearchClicked] = useState(false);
   const [missingShowed, setMissingShowed] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [employeesPerPage, setEmployeesPerPage] = useState(14);
   const [attendanceChanged, setAttendanceChanged] = useState(1);
   const [possiblePages, setPossiblePages] = useState(null);
-
-  const lastEmployeeIndex = currentPage * employeesPerPage;
-  const firstEmployeeIndex = lastEmployeeIndex - employeesPerPage
-  const currentEmployees = employees ? employees.slice(firstEmployeeIndex, lastEmployeeIndex) : null
 
   const fetchEmployees = (page) => {
     return fetch(`/api/employees?page=${page}&limit=14`).then((res) => res.json()).then((results) => {
       setLoading(false);
       setEmployees(results.employees);
-      console.log('on client ' + results.possiblePages)
-      setPossiblePages(results.possiblePages)
-    });
-  };
-  const fetchEmployeesOnCancel = () => {
-    return fetch("/api/employees").then((res) => res.json()).then((results) => {
-      setLoading(false);
-      setEmployees(results.employees);
-      setPossiblePages(results.possiblePages)
+      setPossiblePages(results.possiblePages);
+      setCurrentPage(page);
       setMissingShowed(false)
-    })
+    });
   };
 
   const handleDelete = (id) => {
@@ -172,8 +160,6 @@ const EmployeeList = () => {
     
   }, [attendanceChanged]);
 
-
-  
   if (loading) {
     return <Loading />;
   }
@@ -181,7 +167,7 @@ const EmployeeList = () => {
   return (<>
   {searchClicked && <SearchField fetchSearchedEmployee={fetchSearchedEmployee}/>}
   <EmployeeTable 
-    fetchEmployeesOnCancel={fetchEmployeesOnCancel}
+    fetchEmployeesOnCancel={fetchEmployees}
     onShowMissing={filterEmployeesOnAttendance}
     employees={employees}
     missingShowed={missingShowed}
@@ -191,11 +177,12 @@ const EmployeeList = () => {
     onSortMiddleName={sortMiddleName} 
     setSearchClicked={setSearchClicked}
     onCheck={setEmployeeAttendanceOnCheck}
+    currentPage={currentPage}
     />
-  {possiblePages && <Pagination 
-      possiblePages={possiblePages}
-      fetchEmployees={fetchEmployees}
-    />}
+      {possiblePages && <Pagination 
+          possiblePages={possiblePages}
+          fetchEmployees={fetchEmployees}
+      />}
   </>)
 };
 

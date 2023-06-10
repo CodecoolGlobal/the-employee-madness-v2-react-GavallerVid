@@ -3,7 +3,7 @@ import "./EmployeeTable.css";
 import { useState } from "react";
 import Dialog from "../Dialog";
 
-const EmployeeTable = ({ employees, onCheck, onDelete, onShowMissing, onSort, onLastNameSort, onSortMiddleName, missingShowed, setSearchClicked, fetchEmployeesOnCancel }) => {
+const EmployeeTable = ({ employees, onCheck, onDelete, onShowMissing, onSort, onLastNameSort, onSortMiddleName, missingShowed, setSearchClicked, fetchEmployeesOnCancel, currentPage }) => {
 
   const [showButton, setShowButton] = useState(true)
   const [showCancel, setShowCancel] = useState(false)
@@ -38,7 +38,7 @@ const EmployeeTable = ({ employees, onCheck, onDelete, onShowMissing, onSort, on
       onLastNameSort()
     }}>Sort By Last Name</button>
     {missingShowed ? <button onClick={() => {
-      fetchEmployeesOnCancel()
+      fetchEmployeesOnCancel(currentPage)
     }}>Show All</button>
     : <button onClick={() => {
       onShowMissing()
@@ -49,7 +49,7 @@ const EmployeeTable = ({ employees, onCheck, onDelete, onShowMissing, onSort, on
       setShowCancel(true)
     }}>Search</button>}
     {showCancel && <button onClick={() => {
-      fetchEmployeesOnCancel()
+      fetchEmployeesOnCancel(currentPage)
       setSearchClicked(false)
       setShowCancel(false)
       setShowButton(true)
