@@ -1,17 +1,20 @@
 import React from "react";
 
-function Pagination ({employeesPerPage, setCurrentPage, totalEmployees}) {
+function Pagination ({fetchEmployees, possiblePages}) {
     let pages = [];
     
-    for (let i = 1; i <= Math.ceil(totalEmployees / employeesPerPage); i++) {
+    for (let i = 1; i <= Math.ceil(possiblePages); i++) {
         pages.push(i)
     }
 
-    return <div className="pagination" style={{display: "flex", justifyContent: "center"}}>
+    return (<div className="pagination" style={{
+        display: "flex", 
+        justifyContent: "center",
+        }}>
         {pages.map((page, index) => {
-            return <button key={index} onClick={() => {setCurrentPage(page)}}>{page}</button>
+            return <button key={index} onClick={() => {fetchEmployees(page)}}>{page}</button>
         })}
-    </div>
+    </div>)
 }
 
 export default Pagination

@@ -4,11 +4,6 @@ import EmployeeTable from "../Components/EmployeeTable";
 import SearchField from "./SearchField";
 import Pagination from "../Components/Pagination";
 
-const fetchEmployees = () => {
-  return fetch("/api/employees").then((res) => res.json());
-};
-
-
 const deleteEmployee = (id) => {
   return fetch(`/api/employees/${id}`, { method: "DELETE" }).then((res) =>
   res.json()
@@ -25,16 +20,26 @@ const EmployeeList = () => {
   const [missingShowed, setMissingShowed] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [employeesPerPage, setEmployeesPerPage] = useState(14);
-  const [attendanceChanged, setAttendanceChanged] = useState(1)
+  const [attendanceChanged, setAttendanceChanged] = useState(1);
+  const [possiblePages, setPossiblePages] = useState(null);
 
   const lastEmployeeIndex = currentPage * employeesPerPage;
   const firstEmployeeIndex = lastEmployeeIndex - employeesPerPage
   const currentEmployees = employees ? employees.slice(firstEmployeeIndex, lastEmployeeIndex) : null
 
-  const fetchEmployeesOnCancel = () => {
-    return fetch("/api/employees").then((res) => res.json()).then((employees) => {
+  const fetchEmployees = (page) => {
+    return fetch(`/api/employees?page=${page}&limit=14`).then((res) => res.json()).then((results) => {
       setLoading(false);
-      setEmployees(employees);
+      setEmployees(results.employees);
+      console.log('on client ' + results.possiblePages)
+      setPossiblePages(results.possiblePages)
+    });
+  };
+  const fetchEmployeesOnCancel = () => {
+    return fetch("/api/employees").then((res) => res.json()).then((results) => {
+      setLoading(false);
+      setEmployees(results.employees);
+      setPossiblePages(results.possiblePages)
       setMissingShowed(false)
     })
   };
@@ -140,9 +145,7 @@ const EmployeeList = () => {
   }
   
   const fetchSearchedEmployee = (searchParam) => {
-    const caseFormattedParam = searchParam.charAt(0).toUpperCase() + searchParam.slice(1).toLowerCase();
-    
-    return fetch(`/api/employees/${caseFormattedParam}`).then((res) => res.json()).then((employees) => {
+    return fetch(`/api/employees/${searchParam}`).then((res) => res.json()).then((employees) => {
       setEmployees(employees)
     })
   }
@@ -165,11 +168,8 @@ const EmployeeList = () => {
   }
   
   useEffect(() => {
-    fetchEmployees()
-    .then((employees) => {
-      setLoading(false);
-      setEmployees(employees);
-    })
+    fetchEmployees(1)
+    
   }, [attendanceChanged]);
 
 
@@ -183,7 +183,7 @@ const EmployeeList = () => {
   <EmployeeTable 
     fetchEmployeesOnCancel={fetchEmployeesOnCancel}
     onShowMissing={filterEmployeesOnAttendance}
-    employees={currentEmployees}
+    employees={employees}
     missingShowed={missingShowed}
     onDelete={handleDelete} 
     onSort={handleSort} 
@@ -192,11 +192,10 @@ const EmployeeList = () => {
     setSearchClicked={setSearchClicked}
     onCheck={setEmployeeAttendanceOnCheck}
     />
-  <Pagination 
-    setCurrentPage={setCurrentPage}
-    employeesPerPage={employeesPerPage}
-    totalEmployees={employees.length}
-    />
+  {possiblePages && <Pagination 
+      possiblePages={possiblePages}
+      fetchEmployees={fetchEmployees}
+    />}
   </>)
 };
 

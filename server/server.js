@@ -14,14 +14,40 @@ if (!MONGO_URL) {
 const app = express();
 app.use(express.json());
 
-app.get("/api/employees/", async (req, res) => {
-  const employees = await EmployeeModel.find().sort({ created: "desc" });
-  return res.json(employees);
+app.get("/api/employees", async (req, res) => {
+  const page =  parseInt(req.query.page)
+  const limit = parseInt(req.query.limit)
+  const employees = await EmployeeModel.find().sort({ created: "desc" });;
+  
+  const startIndex = (page - 1) * limit
+  const endIndex = page * limit
+  const possiblePages = await EmployeeModel.countDocuments().exec() / limit
+
+  const results = {};
+  results.possiblePages = possiblePages
+
+    if (endIndex < await EmployeeModel.countDocuments().exec()) {
+      results.next = {
+        page: page + 1,
+        limit: limit
+      }
+    }
+
+    if(startIndex > 0) {
+      results.previous = {
+        page: page - 1,
+        limit: limit
+      }
+    }
+
+  results.employees = employees.slice(startIndex, endIndex)
+  
+  return res.json(results);
 });
 
 app.get('/api/employees/:search', async(req, res) => {
   const employees = await EmployeeModel.find(
-    { $or: [{name: {$regex: req.params.search}}, {level: {$regex: req.params.search}}, {position: {$regex: req.params.search}}] })
+    { $or: [{name: {$regex: req.params.search, $options:"i"}}, {level: {$regex: req.params.search, $options:"i"}}, {position: {$regex: req.params.search, $options:"i"}}] })
   return res.json(employees);
 });
 
