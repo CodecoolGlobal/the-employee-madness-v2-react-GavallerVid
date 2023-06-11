@@ -8,6 +8,7 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel, equipments }) => {
   const [desiredSalary, setDesiredSaraly] = useState(employee?.desiredSalary?? "");
   const [favouriteColor, setFavouriteColor] = useState(employee?.favouriteColor?? "");
   const [startingDate, setStartingDate] = useState(employee?.startingDate?? "");
+  const [equipment, setEquipment] = useState(employee?.equipment?? "")
 
   const formatDate = (date) => {
     if (date.length > 14) {
@@ -15,7 +16,12 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel, equipments }) => {
     } else {
       return date
     }
-  } 
+  }
+
+  const handleSelection = (id) => {
+    const equipmentToAdd = equipments.find((eq) => eq._id === id);
+    setEquipment(equipmentToAdd)
+  }
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -29,7 +35,8 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel, equipments }) => {
         salary,
         desiredSalary,
         favouriteColor,
-        startingDate
+        startingDate,
+        equipment
       });
     }
 
@@ -40,7 +47,8 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel, equipments }) => {
       salary,
       desiredSalary,
       favouriteColor,
-      startingDate
+      startingDate,
+      equipment
     });
   };
 
@@ -61,12 +69,17 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel, equipments }) => {
         </div>
 
         <div className="control">
-          <select style={{textAlign: "center", width: "200px", height: "4.3vh", marginTop: "28px", fontSize: "17px"}}
-            onChange={(e) => {console.log(e.target.value)}}>
+          <label htmlFor="select">Choose An Equipment:</label>
+          <select style={{textAlign: "center", width: "200px", marginTop: "28px", fontSize: "17px"}}
+            onChange={(e) => {
+              handleSelection(e.target.value)
+              }} id="select">
+              <option>Choose an Equipment</option>
               {equipments && equipments.map((equipment, i) => {
                 return <option key={i} value={equipment._id}>{equipment.name}</option>
               })}
           </select>
+
         </div>
 
       </div>

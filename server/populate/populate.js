@@ -33,7 +33,8 @@ const populateEmployees = async () => {
     desiredSalary: pick(desiredSalaries),
     favouriteColor: pick(favouriteColors),
     startingDate: pick(startingDates),
-    attendance: pick(attendances)
+    attendance: pick(attendances),
+    equipment: {name: "mock", type: "mock", amount: 0}
   }));
 
   await EmployeeModel.create(...employees);

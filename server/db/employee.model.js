@@ -13,6 +13,7 @@ const EmployeeSchema = new Schema({
   favouriteColor: String,
   startingDate: Date,
   attendance: String,
+  equipment: Object,
   created: {
     type: Date,
     default: Date.now,

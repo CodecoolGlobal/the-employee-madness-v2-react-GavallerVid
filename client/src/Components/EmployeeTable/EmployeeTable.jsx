@@ -74,6 +74,7 @@ const EmployeeTable = ({ employees, onCheck, onDelete, onShowMissing, onSort, on
           <th>Current Salary</th>
           <th>Desired Salary</th>
           <th>Salary Difference</th>
+          <th>Equipment</th>
           <th>Favourite Color</th>
         </tr>
       </thead>
@@ -105,6 +106,7 @@ const EmployeeTable = ({ employees, onCheck, onDelete, onShowMissing, onSort, on
             <td>{huf.format(employee.salary)}</td>
             <td>{huf.format(employee.desiredSalary)}</td>
             <td>{calculateSalaryDifference(employee.salary, employee.desiredSalary)}</td>
+            <td>{employee.equipment.name}</td>
             <td style={{backgroundColor: employee.favouriteColor,}}></td>
             <td>
               <Link to={`/update/${employee._id}`}>
