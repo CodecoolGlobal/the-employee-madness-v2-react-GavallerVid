@@ -8,4 +8,4 @@ const EquipmentModel = new Schema ({
     amount: Number
 });
 
-module.exports = mongoose.model('eqipment', EquipmentModel)
+module.exports = mongoose.model('equipment', EquipmentModel)

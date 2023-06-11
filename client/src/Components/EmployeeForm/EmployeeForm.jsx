@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
+const EmployeeForm = ({ onSave, disabled, employee, onCancel, equipments }) => {
   const [name, setName] = useState(employee?.name ?? "");
   const [level, setLevel] = useState(employee?.level ?? "");
   const [position, setPosition] = useState(employee?.position ?? "");
@@ -46,14 +46,29 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
 
   return (
     <form className="EmployeeForm" onSubmit={onSubmit}>
-      <div className="control">
-        <label htmlFor="name">Name:</label>
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          name="name"
-          id="name"
-        />
+
+      <div className="color-selec-container" style={{display: 'flex', width: "400px"}}>
+
+        <div className="control">
+          <label htmlFor="name">Full Name:</label>
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            name="name"
+            id="name"
+            style={{width: "250px"}}
+          />
+        </div>
+
+        <div className="control">
+          <select style={{textAlign: "center", width: "200px", height: "4.3vh", marginTop: "28px", fontSize: "17px"}}
+            onChange={(e) => {console.log(e.target.value)}}>
+              {equipments && equipments.map((equipment, i) => {
+                return <option key={i} value={equipment._id}>{equipment.name}</option>
+              })}
+          </select>
+        </div>
+
       </div>
 
       <div className="control">
@@ -63,6 +78,7 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
           onChange={(e) => setLevel(e.target.value)}
           name="level"
           id="level"
+          style={{width: "250px"}}
         />
       </div>
 
@@ -73,6 +89,7 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
           onChange={(e) => setPosition(e.target.value)}
           name="position"
           id="position"
+          style={{width: "250px"}}
         />
       </div>
 
@@ -84,17 +101,19 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
           onChange={(e) => setSalary(e.target.value)}
           name="salary"
           id="salary"
+          style={{width: "250px"}}
         />
       </div>
 
       <div className="control">
-        <label htmlFor="position">desiredSalary:</label>
+        <label htmlFor="position">Desired Salary:</label>
         <input
           value={desiredSalary}
           type="number"
           onChange={(e) => setDesiredSaraly(e.target.value)}
           name="desired"
           id="desired"
+          style={{width: "250px"}}
         />
       </div>
 
@@ -106,8 +125,11 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
           onChange={(e) => setFavouriteColor(e.target.value)}
           name="color"
           id="color"
+          style={{width: "250px"}}
         />
       </div>
+
+
 
       <div className="control">
         <label htmlFor="position">Starting Date:</label>
@@ -117,6 +139,7 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
           onChange={(e) => {setStartingDate(e.target.value)}}
           name="startingDate"
           id="startingDate"
+          style={{width: "250px"}}
         />
       </div>
 

@@ -18,6 +18,10 @@ const fetchEmployee = (id) => {
   return fetch(`/api/get/employees/${id}`).then((res) => res.json());
 };
 
+const fetchEquipments = () => {
+  return fetch("/api/equipments").then((res) => res.json());
+};
+
 const EmployeeUpdater = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -25,6 +29,7 @@ const EmployeeUpdater = () => {
   const [employee, setEmployee] = useState(null);
   const [updateLoading, setUpdateLoading] = useState(false);
   const [employeeLoading, setEmployeeLoading] = useState(true);
+  const [equipments, setEquipments] = useState([])
 
   useEffect(() => {
     setEmployeeLoading(true);
@@ -34,6 +39,13 @@ const EmployeeUpdater = () => {
         setEmployeeLoading(false);
       });
   }, [id]);
+
+  useEffect(() => {
+    fetchEquipments()
+    .then((equipments) => {
+      setEquipments(equipments)
+    })
+    }, []);
 
   const handleUpdateEmployee = (employee) => {
     setUpdateLoading(true);
@@ -51,6 +63,7 @@ const EmployeeUpdater = () => {
   return (
     <EmployeeForm
       employee={employee}
+      equipments={equipments}
       onSave={handleUpdateEmployee}
       disabled={updateLoading}
       onCancel={() => navigate("/")}
