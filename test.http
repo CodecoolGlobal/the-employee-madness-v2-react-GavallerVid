@@ -1,4 +1,4 @@
-GET http://localhost:8080/api/employees?page=3&limit=14
+GET http://localhost:8080/api/employees?page=1&limit=14&order=asc&key=name
 
 ###
 POST http://localhost:8080/api/employees/
@@ -34,3 +34,7 @@ Content-Type: application/json
   "type": "LMG",
   "amount": 10
 }
+
+###
+
+GET http://localhost:8080/api/brands

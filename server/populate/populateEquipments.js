@@ -18,7 +18,7 @@ if (!mongoUrl) {
 
 const pick = (from) => from[Math.floor(Math.random() * (from.length - 0))];
 
-const populateEmployees = async () => {
+const populateEquipments = async () => {
   await EquipmentModel.deleteMany({});
 
   const equipments = names.map((name) => ({
@@ -34,7 +34,7 @@ const populateEmployees = async () => {
 const main = async () => {
   await mongoose.connect(mongoUrl);
 
-  await populateEmployees();
+  await populateEquipments();
 
   await mongoose.disconnect();
 };

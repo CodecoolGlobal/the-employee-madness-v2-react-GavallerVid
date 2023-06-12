@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const EmployeeModel = require("./db/employee.model");
 const EquipmentModel = require("./db/equipment.model");
+const BrandModel = require("./db/brand.model")
 
 const { MONGO_URL, PORT = 8080 } = process.env;
 
@@ -14,10 +15,19 @@ if (!MONGO_URL) {
 const app = express();
 app.use(express.json());
 
+app.get("/api/brands", async (req, res) => {
+  const brands = await BrandModel.find();
+  return res.json(brands)
+})
+
 app.get("/api/employees", async (req, res) => {
   const page =  parseInt(req.query.page)
   const limit = parseInt(req.query.limit)
-  const employees = await EmployeeModel.find().sort({ created: "desc" });;
+  const order = req.query.order
+  const key = req.query.key
+  const sort = {[key]: order}
+  
+  const employees = await EmployeeModel.find().sort(sort)
   
   const startIndex = (page - 1) * limit
   const endIndex = page * limit

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const EmployeeForm = ({ onSave, disabled, employee, onCancel, equipments }) => {
+const EmployeeForm = ({ onSave, disabled, employee, onCancel, equipments, brands }) => {
   const [name, setName] = useState(employee?.name ?? "");
   const [level, setLevel] = useState(employee?.level ?? "");
   const [position, setPosition] = useState(employee?.position ?? "");
@@ -9,6 +9,7 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel, equipments }) => {
   const [favouriteColor, setFavouriteColor] = useState(employee?.favouriteColor?? "");
   const [startingDate, setStartingDate] = useState(employee?.startingDate?? "");
   const [equipment, setEquipment] = useState(employee?.equipment?? "")
+  const [favouriteBrand, setFavouriteBrand] = useState(employee?.favouriteBrand?? "")
 
   const formatDate = (date) => {
     if (date.length > 14) {
@@ -21,6 +22,10 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel, equipments }) => {
   const handleSelection = (id) => {
     const equipmentToAdd = equipments.find((eq) => eq._id === id);
     setEquipment(equipmentToAdd)
+  }
+
+  const handleBrandSelection = (id) => {
+    setFavouriteBrand(id)
   }
 
   const onSubmit = (e) => {
@@ -36,7 +41,8 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel, equipments }) => {
         desiredSalary,
         favouriteColor,
         startingDate,
-        equipment
+        equipment,
+        favouriteBrand
       });
     }
 
@@ -48,7 +54,8 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel, equipments }) => {
       desiredSalary,
       favouriteColor,
       startingDate,
-      equipment
+      equipment,
+      favouriteBrand
     });
   };
 
@@ -79,7 +86,19 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel, equipments }) => {
                 return <option key={i} value={equipment._id}>{equipment.name}</option>
               })}
           </select>
+        </div>
 
+        <div className="control">
+          <label htmlFor="select">Choose A Brand:</label>
+          <select style={{textAlign: "center", width: "200px", marginTop: "28px", fontSize: "17px"}}
+            onChange={(e) => {
+              handleBrandSelection(e.target.value)
+              }} id="select">
+              <option>Choose a Brand</option>
+              {brands && brands.map((brand, i) => {
+                return <option key={i} value={brand._id}>{brand.name}</option>
+              })}
+          </select>
         </div>
 
       </div>
