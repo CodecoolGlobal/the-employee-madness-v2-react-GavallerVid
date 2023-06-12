@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const EmployeeModel = require("./db/employee.model");
-const EquipmentModel = require("./db/equipment.model")
+const EquipmentModel = require("./db/equipment.model");
 
 const { MONGO_URL, PORT = 8080 } = process.env;
 
@@ -79,11 +79,11 @@ app.post("/api/equipments", async (req, res, next) => {
 
 app.patch("/api/equipments/:id", async(req, res, next) => {
   try {
-    const equipment = await EquipmentModel.findByIdAndUpdate(
-      { _id: req.params.id },
-      { $set: {...req.body } },
-      { new: true}
-    );
+    const equipment = await EquipmentModel.findOne({_id: req.params.id})
+    equipment.name = req.body.name
+    equipment.type = req.body.type
+    equipment.amount = req.body.amount
+    await equipment.save()
     return res.json(equipment)
   } catch (error) {
     return next(error)
