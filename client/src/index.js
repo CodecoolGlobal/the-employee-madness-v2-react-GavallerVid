@@ -16,6 +16,8 @@ import FormTest from "./Pages/FormTest";
 import EquiptmentEditor from "./Pages/EquipmentEditor";
 import EquipmentList from "./Pages/EquipmentList";
 import EquipmentCreator from "./Pages/EquipmentCreator";
+import DivisionList from "./Pages/DivisionsList";
+import DivisionUpdater from "./Pages/DivisionUpdater";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +60,14 @@ const router = createBrowserRouter([
       {
         path: "/allequipments",
         element: <EquipmentList />
+      },
+      {
+        path: "/divisions",
+        element: <DivisionList />
+      },
+      {
+        path: "/divisionUpdate/:id",
+        element: <DivisionUpdater />
       }
     ],
   },

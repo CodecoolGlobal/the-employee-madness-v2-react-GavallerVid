@@ -13,7 +13,13 @@ const startingDates = require("./startingDate.json");
 const attendances = require("./attendance.json");
 const brandNames = require("./brandNames.json")
 const EmployeeModel = require("../db/employee.model");
-const BrandModel = require("../db/brand.model")
+const BrandModel = require("../db/brand.model");
+const brandIds = require("./brandIDs.json");
+const DivisionModel = require("../db/divisons.model");
+const divisionNames = require("./divisionsNames.json");
+const cities = require("./cities.json");
+const countries = require("./countries.json")
+
 
 const mongoUrl = process.env.MONGO_URL;
 
@@ -24,9 +30,10 @@ if (!mongoUrl) {
 
 const pick = (from) => from[Math.floor(Math.random() * (from.length - 0))];
 
+
 const populateEmployees = async () => {
   await EmployeeModel.deleteMany({});
-
+  
   const employees = names.map((name) => ({
     name,
     level: pick(levels),
@@ -37,7 +44,6 @@ const populateEmployees = async () => {
     startingDate: pick(startingDates),
     attendance: pick(attendances),
     equipment: {name: "mock", type: "mock", amount: 0},
-    favouriteBrand: "123456789012345678901234"
   }));
 
   await EmployeeModel.create(...employees);
@@ -45,7 +51,6 @@ const populateEmployees = async () => {
 };
 
   const populateBrands = async () => {
-    await BrandModel.deleteMany({});
 
   /*   const brands = brandNames.map((name) => {
       return {name}
@@ -59,7 +64,49 @@ const populateEmployees = async () => {
     console.log("brands created");
   };
 
-  
+  const populateDivisons = async () => {
+    await DivisionModel.deleteMany({});
+
+    const divisions = divisionNames.map((name) =>
+    ({
+      name,
+      budget: pick(desiredSalaries),
+      location: {city: pick(cities), country: pick(countries)}
+    }))
+
+    await DivisionModel.create(...divisions)
+    console.log('divisions created')
+  }
+
+  const connectEmployeesWithDivisions = async () => {
+    const divisionIds = await DivisionModel.find({}, '_id');
+    const employees = await EmployeeModel.find();
+
+    employees.forEach((employee) => {
+      employee.division = pick(divisionIds)
+      employee.save()
+    })
+  }
+
+  const connectEmployeesWithFavBrands = async () => {
+    const brandIds = await BrandModel.find({}, '_id');
+    const employees = await EmployeeModel.find();
+
+    employees.forEach((employee) => {
+      employee.favouriteBrand = pick(brandIds)
+      employee.save()
+    })
+  }
+
+  const connectDivisionsWithEmps = async () => {
+    const employeeIds = await EmployeeModel.find({}, '_id')
+    const divisions = await DivisionModel.find();
+
+    divisions.forEach((division) => {
+      division.boss = pick(employeeIds)
+      division.save()
+    })
+  }
 
 const main = async () => {
   await mongoose.connect(mongoUrl);
@@ -67,6 +114,14 @@ const main = async () => {
   await populateEmployees();
 
   await populateBrands();
+
+  await populateDivisons();
+
+  await connectEmployeesWithDivisions();
+
+  await connectEmployeesWithFavBrands();
+
+  await connectDivisionsWithEmps();
 
   await mongoose.disconnect();
 };

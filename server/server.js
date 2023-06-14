@@ -3,7 +3,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const EmployeeModel = require("./db/employee.model");
 const EquipmentModel = require("./db/equipment.model");
-const BrandModel = require("./db/brand.model")
+const BrandModel = require("./db/brand.model");
+const DivisonsModel = require("./db/divisons.model");
 
 const { MONGO_URL, PORT = 8080 } = process.env;
 
@@ -15,11 +16,51 @@ if (!MONGO_URL) {
 const app = express();
 app.use(express.json());
 
+app.get("/api/divisions", async (req, res) => {
+  const divisions = await DivisonsModel.find().populate('boss')
+  return res.json(divisions)
+});
+
+app.get("/api/divisions/:id", async (req, res) => {
+  const division = await DivisonsModel.findById(req.params.id)
+  return res.json(division)
+});
+
+app.post("/api/divisons", async (req, res, next) => {
+  const divison = req.body
+
+  try {
+    const saved = await DivisonsModel.create(divison)
+    return res.json(saved)
+  } catch (error) {
+    return next(error)
+  }
+});
+
+app.patch("/api/divisions/:id", async (req, res, rext) => {
+  try {
+    const divison = DivisonsModel.findOneAndUpdate({_id: req.params.id},{$set: {...req.body}}, { new: true})
+    return res.json(divison)
+  } catch (error) {
+    return next(error)
+  }
+});
+
+app.delete("/api/divisions/:id", async (req, res, next) => {
+  try {
+    const division = await DivisonsModel.findById(req.params.id)
+    const deleted = division.delete();
+    return res.json(deleted)
+  } catch (error) {
+    return next(error)
+  }
+})
+
 app.get("/api/brands", async (req, res) => {
   const brands = await BrandModel.find();
   return res.json(brands)
 })
-
+//.populate('favouriteBrand').populate('division')
 app.get("/api/employees", async (req, res) => {
   const page =  parseInt(req.query.page)
   const limit = parseInt(req.query.limit)
@@ -27,7 +68,7 @@ app.get("/api/employees", async (req, res) => {
   const key = req.query.key
   const sort = {[key]: order}
   
-  const employees = await EmployeeModel.find().sort(sort)
+  const employees = await EmployeeModel.find().populate('favouriteBrand').populate('division').sort(sort)
   
   const startIndex = (page - 1) * limit
   const endIndex = page * limit

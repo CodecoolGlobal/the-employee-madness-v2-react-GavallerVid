@@ -18,6 +18,10 @@ const EmployeeSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Brand"
   },
+  division: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Division"
+  },
   created: {
     type: Date,
     default: Date.now,

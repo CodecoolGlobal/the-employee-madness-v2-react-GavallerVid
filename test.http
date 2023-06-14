@@ -37,4 +37,4 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8080/api/brands
+GET http://localhost:8080/api/divisions
