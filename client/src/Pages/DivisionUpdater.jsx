@@ -21,7 +21,7 @@ function DivisionUpdater () {
     const { id } = useParams()
     const navigate = useNavigate();
 
-    const [division, setDivision] = useState([])
+    const [division, setDivision] = useState(null)
 
     useEffect(() => {
         fetchDivision(id)
@@ -37,11 +37,11 @@ function DivisionUpdater () {
             })
     }
 
-    return <DivisionForm 
+    return (division && <DivisionForm 
         division={division}
-        onUpdate={DivisionForm}
-        onCancel={() => navigate("/division")}
-    />
+        onUpdate={handleUpdateDivision}
+        onCancel={() => navigate("/divisions")}
+    />)
 }
 
 export default DivisionUpdater

@@ -5,6 +5,7 @@ const EmployeeModel = require("./db/employee.model");
 const EquipmentModel = require("./db/equipment.model");
 const BrandModel = require("./db/brand.model");
 const DivisonsModel = require("./db/divisons.model");
+const divisonsModel = require("./db/divisons.model");
 
 const { MONGO_URL, PORT = 8080 } = process.env;
 
@@ -37,12 +38,17 @@ app.post("/api/divisons", async (req, res, next) => {
   }
 });
 
-app.patch("/api/divisions/:id", async (req, res, rext) => {
+app.patch("/api/divisions/:id", async (req, res) => {
   try {
-    const divison = DivisonsModel.findOneAndUpdate({_id: req.params.id},{$set: {...req.body}}, { new: true})
-    return res.json(divison)
+    console.log(req.params.id)
+    const division = await divisonsModel.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: { ...req.body } },
+      { new: true }
+    );
+    return res.json(division);
   } catch (error) {
-    return next(error)
+    console.log(error)
   }
 });
 
