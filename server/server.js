@@ -13,6 +13,13 @@ if (!MONGO_URL) {
 const app = express();
 app.use(express.json());
 
+app.get("/api/filter/employees/:id", async (req, res) => {
+  const filter = req.params.id
+  console.log(filter)
+  const filteredEmployees = await EmployeeModel.find({yearsOfExperience: {$gte: filter}}).sort({name: "asc"})
+  return res.json(filteredEmployees)
+})
+
 app.get("/api/employees/", async (req, res) => {
   const employees = await EmployeeModel.find().sort({ created: "desc" });
   return res.json(employees);

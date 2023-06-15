@@ -3,12 +3,16 @@ import "./EmployeeTable.css";
 
 const EmployeeTable = ({ employees, onDelete }) => (
   <div className="EmployeeTable">
+    <Link to={"/years-of-experience/8"}>
+    <button>Show Employee Records</button>
+    </Link>
     <table>
       <thead>
         <tr>
           <th>Name</th>
           <th>Level</th>
           <th>Position</th>
+          <th>Years of Experience</th>
           <th />
         </tr>
       </thead>
@@ -18,6 +22,7 @@ const EmployeeTable = ({ employees, onDelete }) => (
             <td>{employee.name}</td>
             <td>{employee.level}</td>
             <td>{employee.position}</td>
+            <td>{employee.yearsOfExperience}</td>
             <td>
               <Link to={`/update/${employee._id}`}>
                 <button type="button">Update</button>
