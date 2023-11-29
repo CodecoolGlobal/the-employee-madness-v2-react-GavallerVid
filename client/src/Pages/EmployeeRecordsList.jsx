@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import FilteredEmployeeList from "../Components/FilteredEmployeeList";
 
-const fetchFilteredEmps = (id) => {
-    return fetch(`/api/filter/employees/${id}`).then((res) => res.json())
+const fetchFilteredEmps = (yearsOfExperience) => {
+    return fetch(`/api/filter/employees/${yearsOfExperience}`).then((res) => res.json())
 }
 
 function EmployeeRecordsList () {
@@ -12,7 +12,7 @@ function EmployeeRecordsList () {
     const [filteredEmps, setFilteredEmps] = useState(null)
     const [direction, setDirection] = useState('asc')
 
-    const {id} = useParams()
+    const {yearsOfExperience} = useParams()
 
     const sort = () => {
         if (direction === 'asc') {
@@ -27,7 +27,7 @@ function EmployeeRecordsList () {
     }
 
     useEffect(() => {
-        fetchFilteredEmps(id)
+        fetchFilteredEmps(yearsOfExperience)
             .then((employees) => {
                 setFilteredEmps(employees)
             })
