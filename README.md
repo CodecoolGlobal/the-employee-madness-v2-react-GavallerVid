@@ -1,4 +1,4 @@
-This is a learning project. The application handles employee data using MERN stack. The goal was to implement components, and handle data on a document based database.
+This is a learning project. The application handles and siplays employee data using MERN stack. The goal was to implement components, conditional rendering, and handle CRUD operations on data in a document based database.
 
 Built With
 JavaScript,
